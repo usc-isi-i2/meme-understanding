@@ -13,3 +13,5 @@ echo "Extracting raw data files"
 mkdir -p $EXTRACTED_DATA_DIRECTORY
 unzip $SOURCE_PATH/training.zip -d $EXTRACTED_DATA_DIRECTORY > logs/mami_training_extraction.log
 unzip -P *MaMiSemEval2022! $SOURCE_PATH/test.zip -d $EXTRACTED_DATA_DIRECTORY > logs/mami_test_extraction.log
+
+cp data/raw/test_labels.txt data/extracted/test_labels.txt
