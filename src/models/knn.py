@@ -50,7 +50,7 @@ class ClipKNN:
             for test_image_path, test_image_data in self.test_features.items():
                 similarities[test_image_path][train_image_path] = cos(train_image_data['features'], test_image_data['features']).item()
 
-        for key, value in tqdm(self.similarities.items()):
+        for key, value in tqdm(similarities.items()):
             self.sorted_similarities[key] = dict(sorted(value.items(), key=lambda item: item[1], reverse=True))
 
     def knn_classification(self, k=10, threshold=0.5, output_dict=False):
