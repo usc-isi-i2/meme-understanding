@@ -14,7 +14,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--device", "cpu"]
+            "args": ["--device", "mps"]
         }
     ]
 }

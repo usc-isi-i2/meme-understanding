@@ -18,15 +18,23 @@ class ClipTrainer(Trainer):
 
     def train(self):
         bce_loss = BCELoss()
-        optimizer = Adam(self.model.parameters(), 0.0001)
 
         self.model.train()
-        for epoch in range(3):
+        for epoch in range(50):
+            print('*' * 50)
             correct = 0
             total_loss = 0
-            for batch in tqdm(self.test_dataloader):
+
+            if epoch:
+                train_clip = True
+                optimizer = Adam(self.model.parameters(), 0.00001)
+            else:
+                train_clip = False
+                optimizer = Adam(self.model.parameters(), 0.001)
+
+            for batch in tqdm(self.train_dataloader):
                 image = [Image.open(image_path) for image_path in batch['input']['image']][0]
-                pred = self.model(image)
+                pred = self.model(image, train_clip)
 
                 predicted_label = int((pred > 0.5).int().tolist()[0][0])
                 actual_label = int(batch['output']['misogynous'][0])
@@ -41,7 +49,7 @@ class ClipTrainer(Trainer):
 
                 correct += 1 if actual_label == predicted_label else 0
 
-            print(f'Epoch {epoch}: Train Accuracy: {correct/len(self.test_dataloader)}')
+            print(f'Epoch {epoch}: Train Accuracy: {correct/len(self.train_dataloader)}')
             print(f'Epoch {epoch}: Train Loss: {total_loss}')
             self.eval(epoch)
 

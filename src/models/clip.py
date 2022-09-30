@@ -7,11 +7,18 @@ class Clip(t.nn.Module):
         self.device = device
         self.processor = CLIPProcessor.from_pretrained(model_path)
         self.clip_model = CLIPModel.from_pretrained(model_path).to(device)
-        self.linear = t.nn.Linear(512, 1).to(device)
+        self.linear_one = t.nn.Linear(512, 64).to(device)
+        self.linear_two = t.nn.Linear(64, 1).to(device)
 
-    def forward(self, image):
-        inputs = self.processor(images=image, return_tensors="pt", padding=True).to(self.device)
-        features = self.clip_model.get_image_features(**inputs)
+    def forward(self, image, train_clip=False):
+        if train_clip:
+          inputs = self.processor(images=image, return_tensors="pt", padding=True).to(self.device)
+          features = self.clip_model.get_image_features(**inputs)
+        else:
+          with t.no_grad():
+            inputs = self.processor(images=image, return_tensors="pt", padding=True).to(self.device)
+            features = self.clip_model.get_image_features(**inputs)
         
-        return t.sigmoid(self.linear(features))
+        x = t.relu(self.linear_one(features))
+        return t.sigmoid(self.linear_two(x))
 
