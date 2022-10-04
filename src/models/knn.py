@@ -1,4 +1,5 @@
 from collections import defaultdict
+import json
 
 import torch
 from tqdm import tqdm
@@ -52,6 +53,9 @@ class ClipKNN:
 
         for key, value in tqdm(similarities.items()):
             self.sorted_similarities[key] = dict(sorted(value.items(), key=lambda item: item[1], reverse=True))
+
+        with open('./data/processed/sorted_similarities.json', 'w') as f:
+            json.dump(self.sorted_similarities, f)
 
     def knn_classification(self, k=10, threshold=0.5, output_dict=False):
         y_true = []
