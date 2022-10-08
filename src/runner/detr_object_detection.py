@@ -66,5 +66,7 @@ if __name__ == '__main__':
             failed_images.append(sample['input']['image'])
     
     detected_objects_info['failed'] = failed_images
-    with open(os.path.join(configs.processed_data_path, configs.objects_info_filename), 'w') as f:
+    info_filepath = os.path.join(configs.processed_data_path, configs.objects_info_filename)
+    with open(info_filepath, 'w') as f:
+        print(f'Saving file information at: {info_filepath}')
         json.dump(detected_objects_info, f)
