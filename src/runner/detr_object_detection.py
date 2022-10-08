@@ -41,7 +41,7 @@ if __name__ == '__main__':
         inputs = feature_extractor(images=image, return_tensors="pt").to(args.device)
         outputs = model(**inputs)
 
-        target_sizes = torch.tensor([image.size[::-1]])
+        target_sizes = torch.tensor([image.size[::-1]]).to(args.device)
         results = feature_extractor.post_process(outputs, target_sizes=target_sizes)[0]
 
         objects_for_current_sample = []
@@ -59,7 +59,6 @@ if __name__ == '__main__':
                 })
 
         detected_objects_info[sample['input']['image']] = objects_for_current_sample
-        break
     
     with open(os.path.join(configs.processed_data_path, configs.objects_info_filename), 'w') as f:
         json.dump(detected_objects_info, f)
