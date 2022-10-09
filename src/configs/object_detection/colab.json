@@ -1,0 +1,11 @@
+{
+    "extracted_data_dir": "data/extracted",
+    "processed_data_path": "/content/drive/MyDrive/Processed",
+    "training_data_dir": "data/extracted/TRAINING",
+    "training_filename": "training.csv",
+    "test_data_dir": "data/extracted/test",
+    "test_filename": "Test.csv",
+    "test_labels": "data/extracted/test_labels.txt",
+    "detected_object_directory": "/content/drive/MyDrive/Processed/objects",
+    "objects_info_filename": "objects.json"
+}

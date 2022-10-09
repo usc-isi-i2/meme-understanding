@@ -15,6 +15,18 @@
                 "PYTHONPATH": "${cwd}"
             },
             "args": ["--device", "mps"]
+        },
+        {
+            "name": "Python: Object Detection",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/detr_object_detection.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--device", "mps", "--config", "${cwd}/src/configs/object_detection/mps.json"]
         }
     ]
 }
