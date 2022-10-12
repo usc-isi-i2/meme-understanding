@@ -27,10 +27,10 @@ class ClipTrainer(Trainer):
 
             if epoch:
                 train_clip = True
-                optimizer = Adam(self.model.parameters(), 0.00001)
+                optimizer = Adam(model.parameters(), lr=5e-5,betas=(0.9,0.98),eps=1e-6,weight_decay=0.2)
             else:
                 train_clip = False
-                optimizer = Adam(self.model.parameters(), 0.001)
+                optimizer = Adam(model.parameters(), lr=5e-5,betas=(0.9,0.98),eps=1e-6,weight_decay=0.2)
 
             for batch in tqdm(self.train_dataloader):
                 image = [Image.open(image_path) for image_path in batch['input']['image']][0]
