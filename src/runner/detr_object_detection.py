@@ -64,8 +64,9 @@ if __name__ == '__main__':
             detected_objects_info[sample['input']['image']] = objects_for_current_sample
         
         except Exception as e:
-            failed_images.append({sample['input']['image']: e})
+            failed_images.append({sample['input']['image']: str(e)})
 
+        break
     
     detected_objects_info['failed'] = failed_images
     info_filepath = os.path.join(configs.processed_data_path, configs.objects_info_filename)
