@@ -57,13 +57,14 @@ if __name__ == '__main__':
                     ni.save(detected_object_filepath)
                     objects_for_current_sample.append({
                         'filename': detected_object_filepath,
-                        'confidence': round(score.item(), 3)
+                        'confidence': round(score.item(), 3),
+                        'label': model.config.id2label[label.item()]
                     })
             
             detected_objects_info[sample['input']['image']] = objects_for_current_sample
         
-        except:
-            failed_images.append(sample['input']['image'])
+        except Exception as e:
+            failed_images.append({sample['input']['image']: str(e)})
     
     detected_objects_info['failed'] = failed_images
     info_filepath = os.path.join(configs.processed_data_path, configs.objects_info_filename)
