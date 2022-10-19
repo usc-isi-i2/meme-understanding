@@ -5,11 +5,13 @@ import requests
 
 # url = "http://images.cocodataset.org/val2017/000000039769.jpg"
 # image = Image.open(requests.get(url, stream=True).raw)
-image = Image.open("/Users/vision/projects/abhinav-kumar-thakur/meme-understanding/data/extracted/TRAINING/7.jpg")
+image = Image.open(
+    "/cluster/raid/home/zhivar.sourati/meme-understanding/data/extracted/TRAINING/7.jpg")
 
 image.show()
 
-feature_extractor = DetrFeatureExtractor.from_pretrained("facebook/detr-resnet-101")
+feature_extractor = DetrFeatureExtractor.from_pretrained(
+    "facebook/detr-resnet-101")
 model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-101")
 
 inputs = feature_extractor(images=image, return_tensors="pt")
@@ -23,6 +25,7 @@ for score, label, box in zip(results["scores"], results["labels"], results["boxe
     box = [round(i, 2) for i in box.tolist()]
     # let's only keep detections with score > 0.9
     if score > 0.9:
+        print('zz')
         ni = image.crop(box)
         ni.show()
 
