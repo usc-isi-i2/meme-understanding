@@ -80,7 +80,3 @@ class ClipKNN:
             print(report)
         
         return report
-
-
-
-    

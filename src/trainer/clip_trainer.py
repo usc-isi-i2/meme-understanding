@@ -25,16 +25,10 @@ class ClipTrainer(Trainer):
             correct = 0
             total_loss = 0
 
-            if epoch:
-                train_clip = True
-                optimizer = Adam(self.model.parameters(), lr=5e-5,betas=(0.9,0.98),eps=1e-6,weight_decay=0.2)
-            else:
-                train_clip = False
-                optimizer = Adam(self.model.parameters(), lr=5e-5,betas=(0.9,0.98),eps=1e-6,weight_decay=0.2)
-
+            optimizer = Adam(self.model.parameters(), lr=5e-5,betas=(0.9,0.98),eps=1e-6,weight_decay=0.2)
             for batch in tqdm(self.train_dataloader):
                 image = [Image.open(image_path) for image_path in batch['input']['image']][0]
-                pred = self.model(image, train_clip)
+                pred = self.model(image)
 
                 predicted_label = int((pred > 0.5).int().tolist()[0][0])
                 actual_label = int(batch['output']['misogynous'][0])

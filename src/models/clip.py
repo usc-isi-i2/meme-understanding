@@ -10,14 +10,10 @@ class Clip(t.nn.Module):
         self.linear_one = t.nn.Linear(512, 64).to(device)
         self.linear_two = t.nn.Linear(64, 1).to(device)
 
-    def forward(self, image, train_clip=False):
-        if train_clip:
+    def forward(self, image):
+        with t.no_grad():
           inputs = self.processor(images=image, return_tensors="pt", padding=True).to(self.device)
           features = self.clip_model.get_image_features(**inputs)
-        else:
-          with t.no_grad():
-            inputs = self.processor(images=image, return_tensors="pt", padding=True).to(self.device)
-            features = self.clip_model.get_image_features(**inputs)
         
         x = t.relu(self.linear_one(features))
         return t.sigmoid(self.linear_two(x))
