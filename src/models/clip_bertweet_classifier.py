@@ -7,7 +7,6 @@ class ClipBertTweetClassifier(t.nn.Module):
     def __init__(self, device='cpu') -> None:
         super().__init__()
 
-        self.max_len = 128
         self.device = device
         self.bertweet = AutoModel.from_pretrained("vinai/bertweet-base").to(device)
         self.processor = CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')
