@@ -7,11 +7,11 @@ from torch.optim import Adam
 from torch import Tensor
 
 from src.trainer.trainer import Trainer
-from src.models.bertweet_classifier import BertTweetClassifier
+from src.models.clip_bertweet_classifier import ClipBertTweetClassifier
 
-class BertweetClassifierTrainer(Trainer):
+class ClipBertweetClassifierTrainer(Trainer):
     def __init__(self, train_dataset, test_dataset, device) -> None:
-        model = BertTweetClassifier(device)
+        model = ClipBertTweetClassifier(device)
         super().__init__(model, train_dataset, test_dataset, device)
 
 

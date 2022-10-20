@@ -14,5 +14,3 @@ if __name__ == '__main__':
 
     trainer = ClipTrainer("openai/clip-vit-base-patch32", train_dataset, test_dataset, args.device)
     trainer.train()
-
-    
