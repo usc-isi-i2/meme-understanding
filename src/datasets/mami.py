@@ -1,6 +1,7 @@
 import os
 from collections import defaultdict
 from torch.utils.data import Dataset
+from transformers import AutoTokenizer
 
 output_keys = ['misogynous', 'shaming', 'stereotype', 'objectification', 'violence']
 
@@ -15,15 +16,31 @@ class MisogynyDataset(Dataset):
 
     self.data = list(self.data_dict.values())
 
+    self.tokenizer = AutoTokenizer.from_pretrained("vinai/bertweet-base", use_fast=False)
+
   
   def __len__(self):
     return len(self.data)
 
   def __getitem__(self, idx):
     item = self.data[idx]
+
+    encoding = self.tokenizer.encode_plus(
+      item['Text Transcription'],
+      add_special_tokens=True,
+      max_length=128,
+      truncation= True,
+      return_token_type_ids=False,
+      padding = 'max_length',
+      return_attention_mask=True,
+      return_tensors='pt',
+    )
+
     input = {
         'image': os.path.join(self.data_dir, item['file_name']),
-        'text': item['Text Transcription']
+        'text': item['Text Transcription'],
+        'input_ids': encoding['input_ids'].flatten(),
+        'attention_mask': encoding['attention_mask'].flatten(),
     }
 
     output = {k:v for k,v in item.items() if k in output_keys}

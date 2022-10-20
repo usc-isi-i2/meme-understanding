@@ -5,13 +5,13 @@ import requests
 
 # url = "http://images.cocodataset.org/val2017/000000039769.jpg"
 # image = Image.open(requests.get(url, stream=True).raw)
+
 image = Image.open(
     "/cluster/raid/home/zhivar.sourati/meme-understanding/data/extracted/TRAINING/7.jpg")
 
 image.show()
 
-feature_extractor = DetrFeatureExtractor.from_pretrained(
-    "facebook/detr-resnet-101")
+feature_extractor = DetrFeatureExtractor.from_pretrained("facebook/detr-resnet-101")
 model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-101")
 
 inputs = feature_extractor(images=image, return_tensors="pt")
