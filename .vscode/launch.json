@@ -5,40 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Clip Bertweet Classifier Runner",
+            "name": "Classify Mami",
             "type": "python",
             "request": "launch",
-            "program": "${cwd}/src/runner/clip_bertweet_linear_classifier.py",
+            "program": "${cwd}/src/runner/classify_nani.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--device", "cuda:3"]
-        },
-        {
-            "name": "Bertweet Classifier Runner",
-            "type": "python",
-            "request": "launch",
-            "program": "${cwd}/src/runner/bertweet_linear_classifier.py",
-            "console": "integratedTerminal",
-            "justMyCode": false,
-            "env": {
-                "PYTHONPATH": "${cwd}"
-            },
-            "args": ["--device", "cuda:3"]
-        },
-        {
-            "name": "Python: Clip mami detection",
-            "type": "python",
-            "request": "launch",
-            "program": "${cwd}/src/runner/clip_linear_classifier.py",
-            "console": "integratedTerminal",
-            "justMyCode": false,
-            "env": {
-                "PYTHONPATH": "${cwd}"
-            },
-            "args": ["--device", "cpu"]
+            "args": ["--model", "bert", "--device", "cuda:0"]
         },
         {
             "name": "Python: Object Detection",

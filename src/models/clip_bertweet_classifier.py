@@ -13,7 +13,7 @@ class ClipBertTweetClassifier(t.nn.Module):
         self.clip_model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32').to(device)
         self.linear_one = t.nn.Linear(1280, 512).to(device)
         self.linear_two = t.nn.Linear(512, 128).to(device)
-        self.linear_three = t.nn.Linear(128, 1).to(device)
+        self.linear_three = t.nn.Linear(128, 5).to(device)
 
     def forward(self, input):
         input_ids = input['input_ids'].to(self.device)

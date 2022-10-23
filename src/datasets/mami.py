@@ -17,7 +17,7 @@ class MisogynyDataset(Dataset):
     self.data = list(self.data_dict.values())
 
     self.tokenizer = AutoTokenizer.from_pretrained("vinai/bertweet-base", use_fast=False)
-    self.text_max_length = 32
+    self.text_max_length = 128
 
   
   def __len__(self):
