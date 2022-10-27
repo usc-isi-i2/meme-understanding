@@ -1,15 +1,15 @@
 {
     "seed": 42,
     "logs": {
-        "filepath": "./logs/ckg11.txt"
+        "filepath": "./logs/text.txt"
     },
     "train": {
         "epochs": 50,
-        "train_batch_size": 256,
+        "train_batch_size": 32,
         "eval_batch_size": 256
     },
     "model": {
-        "type": "combined",
+        "type": "text",
         "text": {
             "bert": "vinai/bertweet-base",
             "max_length": 128
