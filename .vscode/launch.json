@@ -8,13 +8,13 @@
             "name": "Classify Mami",
             "type": "python",
             "request": "launch",
-            "program": "${cwd}/src/runner/classify_nani.py",
+            "program": "${cwd}/src/runner/classify_mami.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--model", "bert", "--device", "cuda:0"]
+            "args": ["--config", "ckg11.json", "--device", "cuda:7"]
         },
         {
             "name": "Python: Object Detection",

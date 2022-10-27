@@ -3,7 +3,7 @@ from PIL import Image
 import torch as t
 
 class Clip(t.nn.Module):
-    def __init__(self, device='cpu') -> None:
+    def __init__(self, configs, device='cpu') -> None:
         super(Clip, self).__init__()
         self.device = device
         model_path="openai/clip-vit-base-patch32"

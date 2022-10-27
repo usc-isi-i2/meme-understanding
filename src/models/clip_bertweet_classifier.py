@@ -4,11 +4,11 @@ from PIL import Image
 
 
 class ClipBertTweetClassifier(t.nn.Module):
-    def __init__(self, device='cpu') -> None:
+    def __init__(self, configs, device='cpu') -> None:
         super().__init__()
 
         self.device = device
-        self.bertweet = AutoModel.from_pretrained("vinai/bertweet-base").to(device)
+        self.bert = AutoModel.from_pretrained(configs.model.text.bert).to(device)
         self.processor = CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')
         self.clip_model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32').to(device)
         self.linear_one = t.nn.Linear(1280, 512).to(device)
@@ -21,7 +21,7 @@ class ClipBertTweetClassifier(t.nn.Module):
         images = [Image.open(image_path) for image_path in input['image']]
 
         with t.no_grad():
-            _, pooled_output = self.bertweet(input_ids=input_ids, attention_mask=attention_mask, return_dict=False)
+            _, pooled_output = self.bert(input_ids=input_ids, attention_mask=attention_mask, return_dict=False)
             inputs = self.processor(images=images, return_tensors="pt", padding=True).to(self.device)
             features = self.clip_model.get_image_features(**inputs)
 

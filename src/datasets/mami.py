@@ -6,7 +6,8 @@ from transformers import AutoTokenizer
 output_keys = ['misogynous', 'shaming', 'stereotype', 'objectification', 'violence']
 
 class MisogynyDataset(Dataset):
-  def __init__(self, data_dir, text_file, labels_file_path=None) -> None:
+  def __init__(self, configs, data_dir, text_file, labels_file_path=None) -> None:
+    self.configs = configs
     self.data_dir = data_dir
     self.data_dict = defaultdict(lambda: {})
     self.update_data_from_file(os.path.join(data_dir, text_file))
@@ -16,8 +17,8 @@ class MisogynyDataset(Dataset):
 
     self.data = list(self.data_dict.values())
 
-    self.tokenizer = AutoTokenizer.from_pretrained("vinai/bertweet-base", use_fast=False)
-    self.text_max_length = 128
+    self.tokenizer = AutoTokenizer.from_pretrained(self.configs.model.text.bert, use_fast=False)
+    self.text_max_length = self.configs.model.text.max_length
 
   
   def __len__(self):
