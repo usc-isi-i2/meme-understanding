@@ -5,3 +5,5 @@ __pycache__
 src/notebooks/cskg_star.tsv
 src/notebooks/cskg.tsv.gz
 src/datasets
+logs
+*.log
