@@ -14,7 +14,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "ckg11.json", "--device", "cuda:7"]
+            "args": ["--config", "dev.json", "--device", "cuda:7"]
         },
         {
             "name": "Python: Object Detection",

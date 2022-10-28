@@ -1,0 +1,21 @@
+{
+    "seed": 42,
+    "logs": {
+        "filepath": "./logs/bl1.txt"
+    },
+    "train": {
+        "epochs": 100,
+        "train_batch_size": 32,
+        "eval_batch_size": 256
+    },
+    "model": {
+        "type": "text",
+        "text": {
+            "bert": "bert-large-uncased",
+            "max_length": 128,
+            "dimentions": 1024
+        },
+        "clip": {
+        }
+    }
+}

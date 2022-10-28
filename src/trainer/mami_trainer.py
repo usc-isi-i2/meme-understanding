@@ -1,3 +1,4 @@
+import json
 from tqdm import tqdm
 
 
@@ -48,15 +49,24 @@ class MamiTrainer(Trainer):
     def eval(self, epoch):
         self.model.eval()
         correct = {k:0 for k in output_keys}
+        predictions = {}
         for batch in tqdm(self.test_dataloader):
             pred = self.model(batch['input'])
             calculate(pred, batch['output'], correct)
 
+            for image_path, scores in zip(batch['input']['image'] , pred.tolist()):
+                predictions[image_path] = {k: v for k, v in zip(output_keys, scores)}
+
         log_dict = {'epoch': epoch, 'type': 'test'}
         for output_key in output_keys:
             log_dict[output_key] = correct[output_key]/self.test_dataset_length
+
+        if not (self.best_score) or (self.best_score < log_dict[output_keys[0]]):
+            self.best_score = log_dict[output_keys[0]]
+            with open(self.configs.predictions.filepath, 'w') as f:
+                json.dump(predictions, f)
         
-        self.logger.log(log_dict)    
+        self.logger.log(log_dict)
 
     def predict(self):
         return super().predict()
