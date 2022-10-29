@@ -1,7 +1,8 @@
 import imp
 from src.datasets.mami import output_keys
 
-def calculate(pred, output, correct_count_map):
+# Find a better name of function /or/ divide the logic in two separate functions
+def calculate(pred, output, actual_labels, pred_labels):
     actual_output = []
     for i in range(len(output[output_keys[0]])):
         sample_output = []
@@ -11,6 +12,7 @@ def calculate(pred, output, correct_count_map):
 
     for i, sample_pred in enumerate((pred > 0.5).int().tolist()):
         for j , output_key in enumerate(output_keys):
-            correct_count_map[output_key] += 1 if sample_pred[j] == actual_output[i][j] else 0
+            actual_labels[output_key].append(actual_output[i][j])
+            pred_labels[output_key].append(sample_pred[j])
 
     return actual_output

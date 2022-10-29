@@ -1,6 +1,7 @@
 import json
 from tqdm import tqdm
 
+from sklearn.metrics import classification_report
 
 from torch.nn import BCELoss
 from torch.optim import Adam
@@ -23,12 +24,13 @@ class MamiTrainer(Trainer):
         
         for epoch in range(self.configs.train.epochs):
             print('*' * 50)
-            correct = {k:0 for k in output_keys}
+            actual_labels = {k:[] for k in output_keys}
+            predicted_labels = {k:[] for k in output_keys}
             total_loss = 0
 
             for batch in tqdm(self.train_dataloader):
                 pred = self.model(batch['input'])
-                actual_output = calculate(pred, batch['output'], correct)
+                actual_output = calculate(pred, batch['output'], actual_labels, predicted_labels)
                 actual_output = Tensor(actual_output).to(self.device)                            
                 loss = bce_loss(pred, actual_output)
                 total_loss += loss.item()
@@ -38,8 +40,8 @@ class MamiTrainer(Trainer):
                 optimizer.step()
 
             log_dict = {'epoch': epoch, 'type': 'train'}
-            for output_key in output_keys:
-                log_dict[output_key] = correct[output_key]/self.train_dataset_length
+            for k in output_keys:
+                log_dict[k] = classification_report(actual_labels[k], predicted_labels[k], target_names=[k, f'!{k}'], output_dict=True)
             
             self.logger.log(log_dict)
     
@@ -48,23 +50,29 @@ class MamiTrainer(Trainer):
 
     def eval(self, epoch):
         self.model.eval()
-        correct = {k:0 for k in output_keys}
+        actual_labels = {k:[] for k in output_keys}
+        predicted_labels = {k:[] for k in output_keys}
+        
         predictions = {}
         for batch in tqdm(self.test_dataloader):
             pred = self.model(batch['input'])
-            calculate(pred, batch['output'], correct)
+            calculate(pred, batch['output'], actual_labels, predicted_labels)
 
             for image_path, scores in zip(batch['input']['image'] , pred.tolist()):
                 predictions[image_path] = {k: v for k, v in zip(output_keys, scores)}
 
         log_dict = {'epoch': epoch, 'type': 'test'}
-        for output_key in output_keys:
-            log_dict[output_key] = correct[output_key]/self.test_dataset_length
+        for k in output_keys:
+            log_dict[k] = classification_report(actual_labels[k], predicted_labels[k], target_names= [k, f'!{k}'], output_dict=True)
 
-        if not (self.best_score) or (self.best_score < log_dict[output_keys[0]]):
-            self.best_score = log_dict[output_keys[0]]
+        if not (self.best_score) or (self.best_score < log_dict[output_keys[0]]['weighted avg']['f1-score']):
+            self.best_score = log_dict[output_keys[0]]['weighted avg']['f1-score']
+            print(f'$$$ Last best prediction at epoch: {epoch}')
             with open(self.configs.predictions.filepath, 'w') as f:
                 json.dump(predictions, f)
+
+            with open(self.configs.logs.best_metrics, 'w') as f:
+                json.dump(log_dict, f)
         
         self.logger.log(log_dict)
 
