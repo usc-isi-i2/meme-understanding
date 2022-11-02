@@ -26,4 +26,4 @@ class BertTweetClassifier(t.nn.Module):
         x = t.relu(self.linear_one(pooled_output))
         x = t.relu(self.linear_two(x))
         x = t.relu(self.linear_three(x))
-        return t.sigmoid(self.linear_four(x))
+        return self.linear_four(x)

@@ -6,7 +6,7 @@ import random
 
 from src.configs.config_reader import read_json_configs
 from src.datasets.mami import MisogynyDataset
-from src.logs.file_logger import FileLogger
+from src.logs.logger import Logger
 from src.trainer.mami_trainer import MamiTrainer
 from src.models.bertweet_classifier import BertTweetClassifier
 from src.models.clip import Clip
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     
 
     configs = read_json_configs(os.path.join('./src/configs/classifier', args.config))
-    logger = FileLogger(configs)
+    logger =Logger(configs)
 
     torch.manual_seed(configs.seed)
     random.seed(configs.seed)

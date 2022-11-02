@@ -28,4 +28,4 @@ class ClipBertTweetClassifier(t.nn.Module):
         combined_features = t.cat((pooled_output, features), 1)
         x_one = t.relu(self.linear_one(combined_features))
         x_two = t.relu(self.linear_two(x_one))
-        return t.sigmoid(self.linear_three(x_two))
+        return self.linear_three(x_two)

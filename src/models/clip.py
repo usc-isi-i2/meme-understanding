@@ -20,4 +20,4 @@ class Clip(t.nn.Module):
             features = self.clip_model.get_image_features(**inputs)
         
         x = t.relu(self.linear_one(features))
-        return t.sigmoid(self.linear_two(x))
+        return self.linear_two(x)
