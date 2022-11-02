@@ -1,20 +1,42 @@
 {
     "seed": 42,
     "logs": {
-        "filepath": "./logs/combined.txt"
+        "filepath": "./logs/combined.txt",
+        "best_metrics": "./logs/combined_best.json"
+    },
+    "datasets": {
+        "mami": {
+            "train": {
+                "misogynous": 0.5,
+                "shaming": 0.1274,
+                "stereotype": 0.2810,
+                "objectification": 0.2202,
+                "violence": 0.0953
+            },
+            "test": {
+                "misogynous": 0.5,
+                "shaming": 0.146,
+                "stereotype": 0.350,
+                "objectification": 0.348,
+                "violence": 0.153
+            }
+        }
     },
     "train": {
-        "epochs": 50,
-        "train_batch_size": 32,
-        "eval_batch_size": 256
+        "epochs": 200,
+        "train_batch_size": 16,
+        "eval_batch_size": 128
+    },
+    "predictions": {
+        "filepath": "./logs/combined_predictions.json"
     },
     "model": {
         "type": "combined",
         "text": {
             "bert": "vinai/bertweet-base",
-            "max_length": 128
+            "max_length": 128,
+            "dimentions": 768
         },
-        "clip": {
-        }
+        "clip": {}
     }
 }

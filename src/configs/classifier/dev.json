@@ -1,7 +1,26 @@
 {
     "seed": 42,
     "logs": {
-        "filepath": "./logs/dev.txt"
+        "filepath": "./logs/dev.txt",
+        "best_metrics": "./logs/dev_best.json"
+    },
+    "datasets": {
+        "mami": {
+            "train": {
+                "misogynous": 0.5,
+                "shaming": 0.1274,
+                "stereotype": 0.2810,
+                "objectification": 0.2202,
+                "violence": 0.0953
+            },
+            "test": {
+                "misogynous": 0.5,
+                "shaming": 0.146,
+                "stereotype": 0.350,
+                "objectification": 0.348,
+                "violence": 0.153
+            }
+        }
     },
     "train": {
         "epochs": 50,
@@ -17,7 +36,6 @@
             "bert": "vinai/bertweet-base",
             "max_length": 128
         },
-        "clip": {
-        }
+        "clip": {}
     }
 }
