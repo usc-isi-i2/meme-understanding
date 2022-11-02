@@ -6,7 +6,7 @@ import random
 
 from src.configs.config_reader import read_json_configs
 from src.datasets.mami import MisogynyDataset
-from src.logs.logger import Logger
+from src.logger import Logger
 from src.trainer.mami_trainer import MamiTrainer
 from src.models.bertweet_classifier import BertTweetClassifier
 from src.models.clip import Clip

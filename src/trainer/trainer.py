@@ -2,7 +2,7 @@ from abc import abstractmethod, ABC
 
 from torch.utils.data import DataLoader
 
-from src.logs.logger import Logger
+from src.logger import Logger
 
 class Trainer(ABC):
     def __init__(self, configs, model, train_dataset, test_dataset, device, logger, train_batch_size=3, test_batch_size=32) -> None:
