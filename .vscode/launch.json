@@ -39,6 +39,18 @@
                 "PYTHONPATH": "${cwd}"
             },
             "args": ["--device", "cpu", "--config", "${cwd}/src/configs/object_detection/local.json"]
+        },
+        {
+            "name": "KNN / Similarity",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/mami_knn_clip_runner.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--device", "cuda:2", "--config", "${cwd}/src/configs/knn/local.json"]
         }
     ]
 }
