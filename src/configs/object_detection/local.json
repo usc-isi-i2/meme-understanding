@@ -7,5 +7,14 @@
     "test_filename": "Test.csv",
     "test_labels": "data/extracted/test_labels.txt",
     "detected_object_directory": "data/processed/objects",
-    "objects_info_filename": "objects.json"
+    "objects_info_filename": "objects.json",
+    "model": {
+        "type": "text",
+        "text": {
+            "bert": "vinai/bertweet-base",
+            "max_length": 128,
+            "dimentions": 768
+        },
+        "clip": {}
+    }
 }
