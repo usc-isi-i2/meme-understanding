@@ -7,17 +7,21 @@ from tabulate import tabulate
 
 from src.models.knn import ClipKNN
 from src.datasets.mami import MisogynyDataset
+from src.configs.config_reader import read_json_configs
 
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('--device', default='cpu', required=True, help='Supported devices: mps/cpu/cuda')
+    arg_parser.add_argument('--configs', required=True, help='configs file from src/configs directory')
     args = arg_parser.parse_args()
+
+    configs = read_json_configs(args.configs)
 
     model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
     processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
-    train_dataset = MisogynyDataset('data/extracted/TRAINING', 'training.csv')
-    test_dataset = MisogynyDataset('data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
+    train_dataset = MisogynyDataset(configs, 'data/extracted/TRAINING', 'training.csv')
+    test_dataset = MisogynyDataset(configs, 'data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
 
     target_names = ["Not misogyny", "Misogyny"]
     clip_knn_model = ClipKNN(model, processor, args.device, train_dataset, test_dataset, target_names)

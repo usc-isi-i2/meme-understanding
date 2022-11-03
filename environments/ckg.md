@@ -14,6 +14,7 @@ pip install accelerate -y
 pip install jupyter notebook -U
 conda install -c conda-forge tabulate
 pip install joblib
+pip install timm
 ```
 # Optional
 * `pip install nvitop`
