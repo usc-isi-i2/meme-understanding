@@ -2,6 +2,7 @@ from argparse import ArgumentParser
 
 from PIL import Image
 import numpy as np
+from tqdm import tqdm
 
 from src.configs.config_reader import read_json_configs
 from src.datasets.mami import MisogynyDataset
@@ -14,14 +15,15 @@ arg_parser.add_argument('--configs', required=True, help='configs file from src/
 args = arg_parser.parse_args()
 
 
-uio = ModelRunner("base", "./src/models/unified-io-inference/base.bin")
+uio = ModelRunner("large", "large.bin")
 
 configs = read_json_configs(args.configs)
 train_dataset = MisogynyDataset(configs, './data/extracted/TRAINING', 'training.csv')
 test_dataset = MisogynyDataset(configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
 
-image_path = test_dataset[0]['input']['image']
-print(image_path)
-image = np.array(Image.open(image_path))
-out = uio.caption(image)
-print(out)
+for sample in tqdm(test_dataset):
+  image_path = test_dataset[0]['input']['image']
+  image = np.array(Image.open(image_path))
+  classification = uio.image_classification(image, answer_options=["misogynous", "not misogynous"])
+
+
