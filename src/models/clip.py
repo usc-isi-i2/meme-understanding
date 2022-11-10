@@ -9,8 +9,10 @@ class Clip(t.nn.Module):
         model_path="openai/clip-vit-base-patch32"
         self.processor = CLIPProcessor.from_pretrained(model_path)
         self.clip_model = CLIPModel.from_pretrained(model_path).to(device)
-        self.linear_one = t.nn.Linear(512, 64).to(device)
-        self.linear_two = t.nn.Linear(64, 5).to(device)
+        self.linear_one = t.nn.Linear(512, 512).to(device)
+        self.linear_two = t.nn.Linear(512, 256).to(device)
+        self.linear_three = t.nn.Linear(256, 128).to(device)
+        self.linear_four = t.nn.Linear(128, 5).to(device)
 
     def forward(self, input):
         images = [Image.open(image_path) for image_path in input['image']]
@@ -20,4 +22,6 @@ class Clip(t.nn.Module):
             features = self.clip_model.get_image_features(**inputs)
         
         x = t.relu(self.linear_one(features))
-        return self.linear_two(x)
+        x = t.relu(self.linear_two(x))
+        x = t.relu(self.linear_three(x))
+        return self.linear_four(x)
