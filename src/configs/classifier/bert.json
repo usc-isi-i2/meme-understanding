@@ -1,8 +1,14 @@
 {
+    "title": "bert-base-uncased",
     "seed": 42,
     "logs": {
-        "filepath": "./logs/dev.txt",
-        "best_metrics": "./logs/dev_best.json"
+        "dir": "./logs",
+        "files": {
+            "train": "train.log",
+            "event": "events.log",
+            "best": "best.log",
+            "predictions": "predictions.log"
+        }
     },
     "datasets": {
         "mami": {
@@ -23,18 +29,19 @@
         }
     },
     "train": {
-        "epochs": 50,
-        "train_batch_size": 32,
-        "eval_batch_size": 256
-    },
-    "predictions": {
-        "filepath": "./logs/dev_predictions.json"
+        "save_dir": "./saves",
+        "epochs": 200,
+        "train_batch_size": 16,
+        "eval_batch_size": 128,
+        "k_fold": 5,
+        "patience": 10
     },
     "model": {
-        "type": "clip",
+        "type": "text",
         "text": {
-            "bert": "vinai/bertweet-base",
-            "max_length": 128
+            "bert": "bert-base-uncased",
+            "max_length": 128,
+            "dimentions": 768
         },
         "clip": {}
     }

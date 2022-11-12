@@ -35,6 +35,8 @@ class Trainer(ABC):
             best_score = None
             best_parames = {}
             epcohs_without_improvement = 0
+
+            test_predictions = None
             for epoch in range(self.configs.train.epochs):
                 self.train(train_dataloader)
                 train_scores, _ = self.eval(train_dataloader)
@@ -60,6 +62,8 @@ class Trainer(ABC):
 
                 if epcohs_without_improvement >= self.configs.train.patience:
                     break
+            
+            self.logger.log_file(self.configs.logs.files.predictions, test_predictions)
         
 
     @abstractmethod

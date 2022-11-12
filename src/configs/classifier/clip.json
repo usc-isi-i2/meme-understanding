@@ -6,7 +6,8 @@
         "files": {
             "train": "train.log",
             "event": "events.log",
-            "best": "best.log"
+            "best": "best.log",
+            "predictions": "predictions.log"
         }
     },
     "datasets": {
@@ -34,9 +35,6 @@
         "eval_batch_size": 128,
         "k_fold": 5,
         "patience": 10
-    },
-    "predictions": {
-        "filepath": "./logs/bertweet_predictions.json"
     },
     "model": {
         "type": "clip",
