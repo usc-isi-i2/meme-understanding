@@ -1,8 +1,13 @@
 {
+    "title": "clip",
     "seed": 42,
     "logs": {
-        "filepath": "./logs/clip.txt",
-        "best_metrics": "./logs/clip_best.json"
+        "dir": "./logs",
+        "files": {
+            "train": "train.log",
+            "event": "events.log",
+            "best": "best.log"
+        }
     },
     "datasets": {
         "mami": {
@@ -23,18 +28,22 @@
         }
     },
     "train": {
+        "save_dir": "./saves",
         "epochs": 200,
-        "train_batch_size": 32,
-        "eval_batch_size": 256
+        "train_batch_size": 16,
+        "eval_batch_size": 128,
+        "k_fold": 5,
+        "patience": 10
     },
     "predictions": {
-        "filepath": "./logs/clip_predictions.json"
+        "filepath": "./logs/bertweet_predictions.json"
     },
     "model": {
         "type": "clip",
         "text": {
             "bert": "vinai/bertweet-base",
-            "max_length": 128
+            "max_length": 128,
+            "dimentions": 768
         },
         "clip": {}
     }

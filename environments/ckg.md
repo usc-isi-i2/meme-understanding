@@ -4,6 +4,12 @@ conda create -n meme-understanding python=3.8 -y
 conda activate meme-understanding
 ```
 
+# To install jupyter notebook
+```
+pip3 install notebook
+```
+
+
 # Dependencies
 ```
 conda install pytorch torchvision torchaudio cudatoolkit=11.4 -c pytorch

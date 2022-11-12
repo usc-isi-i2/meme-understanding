@@ -20,8 +20,8 @@ if __name__ == '__main__':
     model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
     processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
-    train_dataset = MisogynyDataset(configs, 'data/extracted/TRAINING', 'training.csv')
-    test_dataset = MisogynyDataset(configs, 'data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
+    train_dataset = MisogynyDataset.create_mami_dataset_from_files('train' , configs, 'data/extracted/TRAINING', 'training.csv')
+    test_dataset = MisogynyDataset.create_mami_dataset_from_files('test', configs, 'data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
 
     target_names = ["Not misogyny", "Misogyny"]
     clip_knn_model = ClipKNN(model, processor, args.device, train_dataset, test_dataset, target_names)

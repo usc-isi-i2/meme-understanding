@@ -1,8 +1,13 @@
 {
+    "title": "bertweet",
     "seed": 42,
     "logs": {
-        "filepath": "./logs/bertweet.txt",
-        "best_metrics": "./logs/bertweet_best.json"
+        "dir": "./logs",
+        "files": {
+            "train": "train.log",
+            "event": "events.log",
+            "best": "best.log"
+        }
     },
     "datasets": {
         "mami": {
@@ -23,9 +28,12 @@
         }
     },
     "train": {
+        "save_dir": "./saves",
         "epochs": 200,
         "train_batch_size": 16,
-        "eval_batch_size": 128
+        "eval_batch_size": 128,
+        "k_fold": 5,
+        "patience": 10
     },
     "predictions": {
         "filepath": "./logs/bertweet_predictions.json"

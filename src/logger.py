@@ -1,17 +1,22 @@
 import os
 import json
+import shutil
 
 class Logger:
     def __init__(self, configs):
-        self.filepath = os.path.join(configs.logs.filepath)
-        if os.path.exists(self.filepath):
-            os.remove(self.filepath)
+        self.configs = configs
+        self.dir = os.path.join(configs.logs.dir, configs.title)
 
-        with open(self.filepath, 'w') as f:
-            f.write(f'configs: {configs}')
+        if os.path.exists(self.dir):
+            shutil.rmtree(self.dir)
+        
+        os.makedirs(self.dir, exist_ok=True)
+        json.dump(configs.configs, open(os.path.join(self.dir, 'configs.json'), 'w'))
+        
 
-    def log_file(self, log_dict):
-        with open(self.filepath, 'a+') as f:
+    def log_file(self, log_file, log_dict):
+        filepath = os.path.join(self.dir, log_file)
+        with open(filepath, 'a+') as f:
             f.write('\n')
             f.write(json.dumps(log_dict))
 

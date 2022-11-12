@@ -33,17 +33,14 @@ if __name__ == '__main__':
 
     args = arg_parser.parse_args()
 
-    
-
     configs = read_json_configs(os.path.join('./src/configs/classifier', args.config))
     logger =Logger(configs)
 
     torch.manual_seed(configs.seed)
     random.seed(configs.seed)
 
-    train_dataset = MisogynyDataset(configs, './data/extracted/TRAINING', 'training.csv')
-    test_dataset = MisogynyDataset(configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
+    train_dataset = MisogynyDataset.create_mami_dataset_from_files('train', configs, './data/extracted/TRAINING', 'training.csv')
+    test_dataset = MisogynyDataset.create_mami_dataset_from_files('test', configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
     
-    model = get_classification_model(configs, args.device)
-    trainer = MamiTrainer(configs, model, train_dataset, test_dataset, args.device, logger)
-    trainer.train()
+    trainer = MamiTrainer(get_classification_model, configs, train_dataset, test_dataset, args.device, logger)
+    trainer.train_kfold()

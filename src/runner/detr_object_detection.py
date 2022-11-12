@@ -24,8 +24,8 @@ if __name__ == '__main__':
     
     model.to(args.device)
 
-    train_dataset = MisogynyDataset(configs, './data/extracted/TRAINING', 'training.csv')
-    test_dataset = MisogynyDataset(configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
+    train_dataset = MisogynyDataset.create_mami_dataset_from_files('train', configs, './data/extracted/TRAINING', 'training.csv')
+    test_dataset = MisogynyDataset.create_mami_dataset_from_files('test' , configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
 
     detected_object_directory = configs.detected_object_directory
 
