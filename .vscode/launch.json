@@ -18,6 +18,30 @@
             "args": ["--config", "bertweet.json", "--device", "cuda:1"]
         },
         {
+            "name": "Bert Classifier",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/classify_mami.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "bert.json", "--device", "cuda:1"]
+        },
+        {
+            "name": "Bert Large Classifier",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/classify_mami.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "bert-large.json", "--device", "cuda:4"]
+        },
+        {
             "name": "Clip Classifier",
             "type": "python",
             "request": "launch",
