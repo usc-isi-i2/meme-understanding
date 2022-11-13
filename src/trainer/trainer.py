@@ -17,39 +17,46 @@ class Trainer(ABC):
         self.logger: Logger = logger
 
     def train_kfold(self):
+        self.logger.log_text(self.configs.logs.files.data, self.train_dataset.summarize())
+        self.logger.log_text(self.configs.logs.files.data, self.test_dataset.summarize())
+
+
         test_dataloader = DataLoader(self.test_dataset, batch_size=self.configs.train.eval_batch_size, shuffle=False)
+        kfold_test_metrics = []
         for kth_fold in range(self.configs.train.k_fold):
             self.model = self.get_model_func(self.configs, self.device)
             self.optimizer = Adam(self.model.parameters(), lr=0.0001)
 
             train_set, eval_set = self.train_dataset.get_kth_fold_dataset(kth_fold)
+            self.logger.log_text(self.configs.logs.files.data, train_set.summarize())
+            self.logger.log_text(self.configs.logs.files.data, eval_set.summarize())
+
             train_dataloader = DataLoader(train_set, batch_size=self.configs.train.train_batch_size, shuffle=True)
             eval_dataloader = DataLoader(eval_set, batch_size=self.configs.train.eval_batch_size, shuffle=False)
-            
-            print('*' * 50)
-            train_set.summarize()
-            print('*' * 25)
-            eval_set.summarize()
-            print('*' * 50)
 
             best_score = None
             best_parames = {}
             epcohs_without_improvement = 0
 
             test_predictions = None
+            test_metric = None
             for epoch in range(self.configs.train.epochs):
                 self.train(train_dataloader)
                 train_scores, _ = self.eval(train_dataloader)
                 eval_scores, _ = self.eval(eval_dataloader)
 
-                if best_score is None or self.summarize_scores(eval_scores) > best_score:
-                    best_score = self.summarize_scores(eval_scores)
+                eval_metric = self.summarize_scores(eval_scores, eval_set.get_class_distribution(True))
+                if best_score is None or  eval_metric > best_score:
+                    best_score = eval_metric
                     test_scores, test_predictions = self.eval(test_dataloader)
+                    test_metric = self.summarize_scores(test_scores, self.test_dataset.get_class_distribution(True))
                     best_parames = {
                         'kth_fold': kth_fold,
                         'epoch': epoch,
-                        'test': {k: test_scores[k][k]['f1-score'] for k in output_keys},
-                        'eval': {k: eval_scores[k][k]['f1-score'] for k in output_keys},
+                        'eval_metric': eval_metric,
+                        'test_metric': test_metric,
+                        'test': {k: test_scores[k]['macro avg']['f1-score'] for k in output_keys},
+                        'eval': {k: eval_scores[k]['macro avg']['f1-score'] for k in output_keys},
                     }
 
                     self.logger.log_file(self.configs.logs.files.best, best_parames)
@@ -63,7 +70,10 @@ class Trainer(ABC):
                 if epcohs_without_improvement >= self.configs.train.patience:
                     break
             
+            kfold_test_metrics.append(test_metric)
             self.logger.log_file(self.configs.logs.files.predictions, test_predictions)
+        
+        self.logger.log_file(self.configs.logs.files.best, {'avg': sum(kfold_test_metrics)/len(kfold_test_metrics), 'kfold_test_metrics': kfold_test_metrics})
         
 
     @abstractmethod

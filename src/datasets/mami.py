@@ -65,16 +65,26 @@ class MisogynyDataset(Dataset):
 
         
   def summarize(self):
-    print(f'Summaries for {self.name} dataset')
-    print(f'Number of samples: {len(self)}')
-    print(f'Class wise distribution:\n{self.get_class_distribution()}')
+    return """
+---------------------------------------------
+Dataset: {}
+Data Dir: {}
+------------------------
+Class wise distribution
+------------------------ 
+{}
+---------------------------------------------
+""".format(self.name, self.data_dir, self.get_class_distribution())
 
-  def get_class_distribution(self):
+  def get_class_distribution(self, return_dict=False):
     class_distribution = defaultdict(int)
     for item in self.data:
       for key in output_keys:
         if item[key] == '1':
           class_distribution[key] += 1
+
+    if return_dict:
+      return class_distribution
 
     class_distribution_table = []
     for key, value in class_distribution.items():

@@ -16,14 +16,22 @@ class MamiTrainer(Trainer):
         super().__init__(get_model_func, configs, train_dataset, test_dataset, device, logger)
         pos_weights = Tensor([0.5/(self.configs.datasets.mami.train.configs[k]) for k in output_keys]).to(self.device)
         self.bce_loss = BCEWithLogitsLoss(pos_weight=pos_weights)
+        self.task = self.configs.task
         
 
-    def summarize_scores(self, scores):
+    def summarize_scores(self, scores, label_distribution):
+        if self.task == 'A':
+            print('Computing scores for task A')
+            return scores[output_keys[0]]['macro avg']['f1-score']
+        
+        print('Computing scores for task B')
         sum_scores = 0
+        sum_labels = 0
         for output_key in output_keys[1:]:
-            sum_scores += scores[output_key][output_key]['f1-score']
+            sum_scores += label_distribution[output_key]*[output_key]*scores[output_key]['macro avg']['f1-score']
+            sum_labels += label_distribution[output_key]
 
-        summarized_scores = sum_scores / len(output_keys) - 1
+        summarized_scores = sum_scores / sum_labels
         return summarized_scores
 
     def train(self, train_dataloader):

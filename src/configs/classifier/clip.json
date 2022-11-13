@@ -1,13 +1,15 @@
 {
     "title": "clip",
     "seed": 42,
+    "task": "A",
     "logs": {
         "dir": "./logs",
         "files": {
             "train": "train.log",
             "event": "events.log",
             "best": "best.log",
-            "predictions": "predictions.log"
+            "predictions": "predictions.log",
+            "data": "data.log"
         }
     },
     "datasets": {
