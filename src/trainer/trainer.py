@@ -3,7 +3,6 @@ from abc import abstractmethod, ABC
 from torch.utils.data import DataLoader
 from torch.optim import Adam
 from src.logger import Logger
-from src.datasets.mami import output_keys
 
 class Trainer(ABC):
     def __init__(self, get_model_func, configs, train_dataset, test_dataset, device, logger) -> None:
@@ -55,8 +54,8 @@ class Trainer(ABC):
                         'epoch': epoch,
                         'eval_metric': eval_metric,
                         'test_metric': test_metric,
-                        'test': {k: test_scores[k]['macro avg']['f1-score'] for k in output_keys},
-                        'eval': {k: eval_scores[k]['macro avg']['f1-score'] for k in output_keys},
+                        'test': {k: test_scores[k]['macro avg']['f1-score'] for k in self.configs.datasets.labels},
+                        'eval': {k: eval_scores[k]['macro avg']['f1-score'] for k in self.configs.datasets.labels},
                     }
 
                     self.logger.log_file(self.configs.logs.files.best, best_parames)
@@ -64,8 +63,8 @@ class Trainer(ABC):
                 else:
                     epcohs_without_improvement += 1
                 
-                self.logger.log_file(self.configs.logs.files.train, {"Kth Fold": kth_fold, "Epoch": epoch, 'train': {k: train_scores[k][k]['f1-score'] for k in output_keys}})
-                self.logger.log_file(self.configs.logs.files.train, {"Kth Fold": kth_fold, "Epoch": epoch, 'eval': {k: eval_scores[k][k]['f1-score'] for k in output_keys}})
+                self.logger.log_file(self.configs.logs.files.train, {"Kth Fold": kth_fold, "Epoch": epoch, 'train': {k: train_scores[k][k]['f1-score'] for k in self.configs.datasets.labels}})
+                self.logger.log_file(self.configs.logs.files.train, {"Kth Fold": kth_fold, "Epoch": epoch, 'eval': {k: eval_scores[k][k]['f1-score'] for k in self.configs.datasets.labels}})
 
                 if epcohs_without_improvement >= self.configs.train.patience:
                     break

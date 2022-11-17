@@ -5,7 +5,7 @@ import numpy as np
 from tqdm import tqdm
 
 from src.configs.config_reader import read_json_configs
-from src.datasets.mami import MisogynyDataset
+from src.datasets.meme import MemeDataset
 from src.models.uio.runner import ModelRunner
 
 
@@ -18,8 +18,8 @@ args = arg_parser.parse_args()
 uio = ModelRunner("large", "large.bin")
 
 configs = read_json_configs(args.configs)
-train_dataset = MisogynyDataset.create_mami_dataset_from_files('train', configs, './data/extracted/TRAINING', 'training.csv')
-test_dataset = MisogynyDataset.create_mami_dataset_from_files('test', configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
+train_dataset = MemeDataset.create_mami_dataset_from_files('train', configs, './data/extracted/TRAINING', 'training.csv')
+test_dataset = MemeDataset.create_mami_dataset_from_files('test', configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
 
 for sample in tqdm(test_dataset):
   image_path = test_dataset[0]['input']['image']

@@ -5,7 +5,7 @@ import torch
 import random
 
 from src.configs.config_reader import read_json_configs
-from src.datasets.mami import MisogynyDataset
+from src.datasets.meme import MemeDataset
 from src.logger import Logger
 from src.trainer.mami_trainer import MamiTrainer
 from src.models.bertweet_classifier import BertTweetClassifier
@@ -26,6 +26,25 @@ def get_classification_model(configs, device):
 
     raise Exception('Invalid model name')
 
+def get_train_dataset(configs):
+    if configs.datasets.name == 'mami':
+        return MemeDataset.create_mami_dataset_from_files('train', configs, './data/extracted/TRAINING', 'training.csv')
+    
+    if configs.datasets.name == 'hateful':
+        return MemeDataset.create_hatefull_meme_dataset_from_files('train', configs, './data/extracted_hateful_meme/data', 'train.jsonl')
+
+    raise Exception('Invalid dataset name')
+
+def get_test_dataset(configs):
+    if configs.datasets.name == 'mami':
+        return MemeDataset.create_mami_dataset_from_files('test', configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
+    
+    if configs.datasets.name == 'hateful':
+        return MemeDataset.create_hatefull_meme_dataset_from_files('test', configs, './data/extracted_hateful_meme/data', 'dev.jsonl')
+
+    raise Exception('Invalid dataset name')
+
+
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('--config', default='ckg11.json', required=True, help='Config file from src/configs/classifier')
@@ -39,8 +58,8 @@ if __name__ == '__main__':
     torch.manual_seed(configs.seed)
     random.seed(configs.seed)
 
-    train_dataset = MisogynyDataset.create_mami_dataset_from_files('train', configs, './data/extracted/TRAINING', 'training.csv')
-    test_dataset = MisogynyDataset.create_mami_dataset_from_files('test', configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
+    train_dataset = get_train_dataset(configs)
+    test_dataset = get_test_dataset(configs)
     
     trainer = MamiTrainer(get_classification_model, configs, train_dataset, test_dataset, args.device, logger)
     trainer.train_kfold()

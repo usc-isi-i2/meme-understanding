@@ -14,7 +14,7 @@ class BertTweetClassifier(t.nn.Module):
         self.linear_one = t.nn.Linear(configs.model.text.dimentions, 512).to(device)
         self.linear_two = t.nn.Linear(512, 256).to(device)
         self.linear_three = t.nn.Linear(256, 128).to(device)
-        self.linear_four = t.nn.Linear(128, 5).to(device)
+        self.linear_four = t.nn.Linear(128, len(self.configs.datasets.labels)).to(device)
 
     def forward(self, input):
         input_ids = input['input_ids'].to(self.device)

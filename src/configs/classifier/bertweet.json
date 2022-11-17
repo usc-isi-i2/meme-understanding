@@ -1,7 +1,7 @@
 {
     "title": "bertweet",
     "seed": 42,
-    "task": "A",
+    "task": "B",
     "logs": {
         "dir": "./logs",
         "files": {
@@ -13,7 +13,7 @@
         }
     },
     "datasets": {
-        "mami": {
+            "labels": ["misogynous", "shaming", "stereotype", "objectification", "violence"],
             "train": {
                 "misogynous": 0.5,
                 "shaming": 0.1274,
@@ -28,7 +28,6 @@
                 "objectification": 0.348,
                 "violence": 0.153
             }
-        }
     },
     "train": {
         "save_dir": "./saves",

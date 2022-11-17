@@ -8,7 +8,7 @@ from PIL import Image
 import torch
 from tqdm import tqdm
 
-from src.datasets.mami import MisogynyDataset
+from src.datasets.meme import MemeDataset
 from src.configs.config_reader import read_json_configs
 
 if __name__ == '__main__':
@@ -24,8 +24,8 @@ if __name__ == '__main__':
     
     model.to(args.device)
 
-    train_dataset = MisogynyDataset.create_mami_dataset_from_files('train', configs, './data/extracted/TRAINING', 'training.csv')
-    test_dataset = MisogynyDataset.create_mami_dataset_from_files('test' , configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
+    train_dataset = MemeDataset.create_mami_dataset_from_files('train', configs, './data/extracted/TRAINING', 'training.csv')
+    test_dataset = MemeDataset.create_mami_dataset_from_files('test' , configs, './data/extracted/test', 'Test.csv', './data/extracted/test_labels.txt')
 
     detected_object_directory = configs.detected_object_directory
 

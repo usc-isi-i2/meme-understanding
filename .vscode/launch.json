@@ -6,6 +6,18 @@
     "python.pythonPath": "~/miniforge-pypy3/envs/unified-io/bin/python",
     "configurations": [
         {
+            "name": "BERTweet Hateful Classifier",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/classify_mami.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "hateful-bertweet.json", "--device", "cuda:0"]
+        },
+        {
             "name": "BERTweet Classifier",
             "type": "python",
             "request": "launch",
@@ -15,7 +27,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "bertweet.json", "--device", "cuda:1"]
+            "args": ["--config", "bertweet.json", "--device", "cuda:0"]
         },
         {
             "name": "Bert Classifier",
@@ -39,7 +51,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "bert-large.json", "--device", "cuda:4"]
+            "args": ["--config", "bert-large.json", "--device", "cuda:2"]
         },
         {
             "name": "Clip Classifier",
@@ -51,7 +63,19 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "clip.json", "--device", "cuda:2"]
+            "args": ["--config", "clip.json", "--device", "cuda:3"]
+        },
+        {
+            "name": "Combined Hateful Classifier",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/classify_mami.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "hateful-combined.json", "--device", "cuda:5"]
         },
         {
             "name": "Combined Classifier",
@@ -63,7 +87,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "combined.json", "--device", "cuda:3"]
+            "args": ["--config", "combined.json", "--device", "cuda:4"]
         },
         {
             "name": "Python: Object Detection",

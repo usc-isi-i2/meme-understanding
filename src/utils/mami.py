@@ -1,8 +1,7 @@
 import torch as t
-from src.datasets.mami import output_keys
 
 # Find a better name of function /or/ divide the logic in two separate functions
-def calculate(pred, output, actual_labels, pred_labels):
+def calculate(pred, output, actual_labels, pred_labels, output_keys):
     actual_output = []
     for i in range(len(output[output_keys[0]])):
         sample_output = []

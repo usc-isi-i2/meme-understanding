@@ -7,6 +7,7 @@ class ClipBertTweetClassifier(t.nn.Module):
     def __init__(self, configs, device='cpu') -> None:
         super().__init__()
 
+        self.configs = configs
         self.device = device
         self.bert = AutoModel.from_pretrained(configs.model.text.bert).to(device)
         self.processor = CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')
@@ -14,7 +15,7 @@ class ClipBertTweetClassifier(t.nn.Module):
         self.linear_one = t.nn.Linear(1280, 512).to(device)
         self.linear_two = t.nn.Linear(512, 256).to(device)
         self.linear_three = t.nn.Linear(256, 128).to(device)
-        self.linear_four = t.nn.Linear(128, 5).to(device)
+        self.linear_four = t.nn.Linear(128, len(self.configs.datasets.labels)).to(device)
 
     def forward(self, input):
         input_ids = input['input_ids'].to(self.device)
