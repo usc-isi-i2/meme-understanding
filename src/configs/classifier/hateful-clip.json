@@ -1,7 +1,7 @@
 {
-    "title": "bert-base-uncased",
+    "title": "hateful-clip",
     "seed": 42,
-    "task": "B",
+    "task": "A",
     "logs": {
         "dir": "./logs",
         "files": {
@@ -13,27 +13,15 @@
         }
     },
     "datasets": {
-        "name": "mami",
+        "name": "hateful",
         "labels": [
-            "misogynous",
-            "shaming",
-            "stereotype",
-            "objectification",
-            "violence"
+            "hateful"
         ],
         "train": {
-            "misogynous": 0.5,
-            "shaming": 0.1274,
-            "stereotype": 0.2810,
-            "objectification": 0.2202,
-            "violence": 0.0953
+            "hateful": 0.5
         },
         "test": {
-            "misogynous": 0.5,
-            "shaming": 0.146,
-            "stereotype": 0.350,
-            "objectification": 0.348,
-            "violence": 0.153
+            "hateful": 0.5
         }
     },
     "train": {
@@ -45,9 +33,9 @@
         "patience": 10
     },
     "model": {
-        "type": "text",
+        "type": "clip",
         "text": {
-            "bert": "bert-base-uncased",
+            "bert": "vinai/bertweet-base",
             "max_length": 128,
             "dimentions": 768
         },

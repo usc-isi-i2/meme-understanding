@@ -13,21 +13,27 @@
         }
     },
     "datasets": {
-        "mami": {
-            "train": {
-                "misogynous": 0.5,
-                "shaming": 0.1274,
-                "stereotype": 0.2810,
-                "objectification": 0.2202,
-                "violence": 0.0953
-            },
-            "test": {
-                "misogynous": 0.5,
-                "shaming": 0.146,
-                "stereotype": 0.350,
-                "objectification": 0.348,
-                "violence": 0.153
-            }
+        "name": "mami",
+        "labels": [
+            "misogynous",
+            "shaming",
+            "stereotype",
+            "objectification",
+            "violence"
+        ],
+        "train": {
+            "misogynous": 0.5,
+            "shaming": 0.1274,
+            "stereotype": 0.2810,
+            "objectification": 0.2202,
+            "violence": 0.0953
+        },
+        "test": {
+            "misogynous": 0.5,
+            "shaming": 0.146,
+            "stereotype": 0.350,
+            "objectification": 0.348,
+            "violence": 0.153
         }
     },
     "train": {

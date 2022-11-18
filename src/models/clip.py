@@ -5,6 +5,8 @@ import torch as t
 class Clip(t.nn.Module):
     def __init__(self, configs, device='cpu') -> None:
         super(Clip, self).__init__()
+
+        self.configs = configs
         self.device = device
         model_path="openai/clip-vit-base-patch32"
         self.processor = CLIPProcessor.from_pretrained(model_path)

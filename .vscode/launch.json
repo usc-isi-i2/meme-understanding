@@ -27,7 +27,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "bertweet.json", "--device", "cuda:0"]
+            "args": ["--config", "bertweet.json", "--device", "cuda:1"]
         },
         {
             "name": "Bert Classifier",
@@ -40,6 +40,18 @@
                 "PYTHONPATH": "${cwd}"
             },
             "args": ["--config", "bert.json", "--device", "cuda:1"]
+        },
+        {
+            "name": "Bert Hateful Classifier",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/classify_mami.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "hateful-bert.json", "--device", "cuda:2"]
         },
         {
             "name": "Bert Large Classifier",
@@ -64,6 +76,18 @@
                 "PYTHONPATH": "${cwd}"
             },
             "args": ["--config", "clip.json", "--device", "cuda:3"]
+        },
+        {
+            "name": "Clip Hateful Classifier",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/classify_mami.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "hateful-clip.json", "--device", "cuda:3"]
         },
         {
             "name": "Combined Hateful Classifier",
