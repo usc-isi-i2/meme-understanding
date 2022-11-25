@@ -148,6 +148,18 @@
                 "PYTHONPATH": "${cwd}:${cwd}/src/models"
             },
             "args": ["--device", "cuda:2", "--config", "${cwd}/src/configs/knn/local.json"]
+        },
+        {
+            "name": "Clip xDNN",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/classify_xdnn.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "clip.json", "--device", "cuda:0"]
         }
     ]
 }

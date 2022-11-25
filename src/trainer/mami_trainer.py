@@ -6,6 +6,7 @@ from sklearn.metrics import classification_report
 
 from torch.nn import BCEWithLogitsLoss
 from torch import Tensor, sigmoid
+from torch.utils.data import DataLoader
 
 from src.trainer.trainer import Trainer
 from src.utils.mami import calculate
@@ -53,6 +54,25 @@ class MamiTrainer(Trainer):
 
         return total_loss
 
+    def extract_features(self, dataset):
+        model = self.get_model_func(self.configs, self.device)
+        model.eval()
+
+        dataloader = DataLoader(dataset, batch_size=self.configs.train.eval_batch_size, shuffle=False)
+
+        features = {}
+        features['Images'] = []
+        features['Features'] = []
+        features['Labels'] = []
+
+        for batch in tqdm(dataloader):
+            f = model.get_features(batch['input'])
+            features['Images'].extend(batch['input']['image'])
+            features['Features'].extend(f.tolist())
+            features['Labels'].extend(batch['output'][self.configs.datasets.labels[0]])
+
+        return features
+        
 
     def eval(self, test_dataloader):
         self.model.eval()
