@@ -124,8 +124,8 @@ def DecisionMaking(Params,datates):
         R=np.zeros((VV,CurrentNC))
         Value=np.zeros((CurrentNC,1))
         for k in range(0,CurrentNC):
-            distance=np.sort(cdist(data.reshape(1, -1),PARAM[k]['Centre'],'minkowski',6))[0]
-            #distance=np.sort(cdist(data.reshape(1, -1),PARAM[k]['Centre'],'euclidean'))[0]
+            # distance=np.sort(cdist(data.reshape(1, -1),PARAM[k]['Centre'],'minkowski',6))[0]
+            distance=np.sort(cdist(data.reshape(1, -1),PARAM[k]['Centre'],'euclidean'))[0]
             Value[k]=distance[0]
         Value = softmax(-1*Value**2).T
         Scores[i-1,] = Value

@@ -159,7 +159,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "clip.json", "--device", "cuda:0"]
+            "args": ["--config", "clip.json", "--device", "cuda:1"]
         }
     ]
 }
