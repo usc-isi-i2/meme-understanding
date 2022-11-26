@@ -36,3 +36,10 @@ class Clip(t.nn.Module):
             features = self.clip_model.get_image_features(**inputs)
         
         return features
+
+    def get_pil_image_features(self, images):
+        with t.no_grad():
+            inputs = self.processor(images=images, return_tensors="pt", padding=True).to(self.device)
+            features = self.clip_model.get_image_features(**inputs)
+        
+        return features

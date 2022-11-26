@@ -160,6 +160,18 @@
                 "PYTHONPATH": "${cwd}"
             },
             "args": ["--config", "clip.json", "--device", "cuda:1"]
+        },
+        {
+            "name": "MNIST xDNN",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/mnist_xdnn_classifier.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "clip.json", "--device", "cuda:1"]
         }
     ]
 }
