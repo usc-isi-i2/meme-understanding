@@ -28,6 +28,29 @@ class Clip(t.nn.Module):
         x = t.relu(self.linear_three(x))
         return self.linear_four(x)
 
+    def get_intermediate_features(self, input, layer):
+        images = [Image.open(image_path) for image_path in input['image']]
+
+        with t.no_grad():
+            inputs = self.processor(images=images, return_tensors="pt", padding=True).to(self.device)
+            features = self.clip_model.get_image_features(**inputs)
+        
+        if layer == 0:
+            return features
+
+        x = t.relu(self.linear_one(features))
+        if layer == 1:
+            return x
+        
+        x = t.relu(self.linear_two(x))
+        if layer == 2:
+            return x
+        x = t.relu(self.linear_three(x))
+        if layer == 3:
+            return x
+
+        return self.linear_four(x)
+
     def get_features(self, input):
         images = [Image.open(image_path) for image_path in input['image']]
 

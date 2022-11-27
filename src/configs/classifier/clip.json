@@ -9,7 +9,8 @@
             "event": "events.log",
             "best": "best.log",
             "predictions": "predictions.log",
-            "data": "data.log"
+            "data": "data.log",
+            "models": "models"
         }
     },
     "datasets": {
@@ -42,7 +43,7 @@
         "train_batch_size": 16,
         "eval_batch_size": 128,
         "k_fold": 5,
-        "patience": 10
+        "patience": 3
     },
     "model": {
         "type": "clip",

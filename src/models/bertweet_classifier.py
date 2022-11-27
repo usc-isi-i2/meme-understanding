@@ -27,3 +27,26 @@ class BertTweetClassifier(t.nn.Module):
         x = t.relu(self.linear_two(x))
         x = t.relu(self.linear_three(x))
         return self.linear_four(x)
+
+    def get_intermediate_features(self, input, layer):
+        input_ids = input['input_ids'].to(self.device)
+        attention_mask = input['attention_mask'].to(self.device)
+
+        with t.no_grad():
+            _, pooled_output = self.bert(input_ids=input_ids, attention_mask=attention_mask, return_dict=False)
+
+        if layer == 0:
+            return pooled_output
+
+        x = t.relu(self.linear_one(pooled_output))
+        if layer == 1:
+            return x
+
+        x = t.relu(self.linear_two(x))
+        if layer == 2:
+            return x
+        x = t.relu(self.linear_three(x))
+        if layer == 3:
+            return x
+
+        return self.linear_four(x)

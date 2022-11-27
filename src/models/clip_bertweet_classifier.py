@@ -32,3 +32,26 @@ class ClipBertTweetClassifier(t.nn.Module):
         x = t.relu(self.linear_two(x))
         x = t.relu(self.linear_three(x))
         return self.linear_four(x)
+    
+    def get_intermediate_features(self, input, layer):
+        input_ids = input['input_ids'].to(self.device)
+        attention_mask = input['attention_mask'].to(self.device)
+        images = [Image.open(image_path) for image_path in input['image']]
+
+        with t.no_grad():
+            _, pooled_output = self.bert(input_ids=input_ids, attention_mask=attention_mask, return_dict=False)
+            inputs = self.processor(images=images, return_tensors="pt", padding=True).to(self.device)
+            features = self.clip_model.get_image_features(**inputs)
+
+        combined_features = t.cat((pooled_output, features), 1)
+        x = t.relu(self.linear_one(combined_features))
+        if layer == 1:
+            return x
+        x = t.relu(self.linear_two(x))
+        if layer == 2:
+            return x
+        x = t.relu(self.linear_three(x))
+        if layer == 3:
+            return x
+
+        return self.linear_four(x)

@@ -1,7 +1,10 @@
 from abc import abstractmethod, ABC
+import os
 
+import torch
 from torch.utils.data import DataLoader
 from torch.optim import Adam
+
 from src.logger import Logger
 
 class Trainer(ABC):
@@ -14,6 +17,7 @@ class Trainer(ABC):
         self.test_dataset = test_dataset
         self.device = device
         self.logger: Logger = logger
+        self.model_save_dir = os.path.join(configs.logs.dir, configs.title + '-' + configs.task, configs.logs.files.models)
 
     def train_kfold(self):
         self.logger.log_text(self.configs.logs.files.data, self.train_dataset.summarize())
@@ -58,6 +62,7 @@ class Trainer(ABC):
                         'eval': {k: eval_scores[k]['macro avg']['f1-score'] for k in self.configs.datasets.labels},
                     }
 
+                    torch.save(self.model.state_dict(), os.path.join(self.model_save_dir, f'best_model_{kth_fold}.pt'))
                     self.logger.log_file(self.configs.logs.files.best, best_parames)
                     epcohs_without_improvement = 0
                 else:
