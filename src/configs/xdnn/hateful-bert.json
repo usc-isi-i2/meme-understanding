@@ -1,0 +1,44 @@
+{
+    "title": "hateful-bert",
+    "seed": 42,
+    "task": "xdnn",
+    "logs": {
+        "dir": "./logs",
+        "files": {
+            "train": "train.log",
+            "event": "events.log",
+            "best": "best.log",
+            "predictions": "predictions.log",
+            "data": "data.log",
+            "models": "models",
+            "xdnn": "xdnn.log"
+        }
+    },
+    "datasets": {
+            "name": "hateful",
+            "labels": ["hateful"],
+            "train": {
+                "hateful": 0.5
+            },
+            "test": {
+                "hateful": 0.5
+            }
+    },
+    "train": {
+        "save_dir": "./saves",
+        "epochs": 200,
+        "train_batch_size": 16,
+        "eval_batch_size": 128,
+        "k_fold": 5,
+        "patience": 10
+    },
+    "model": {
+        "type": "text",
+        "text": {
+            "bert": "bert-base-uncased",
+            "max_length": 128,
+            "dimentions": 768
+        },
+        "clip": {}
+    }
+}

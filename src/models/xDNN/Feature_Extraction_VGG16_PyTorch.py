@@ -36,6 +36,12 @@ class Encoder(nn.Module):
         return output
 
 model = Encoder()
+
+vgg_transform = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),# VGG-16 Takes 224x224 images as input, so we resize all of them
+        transforms.ToTensor()]
+    )
  
 def extractor(img_path, net):
     transform = transforms.Compose([
@@ -55,67 +61,84 @@ def extractor(img_path, net):
 
     return y
 
+def vgg_extractor(img, net):
+    transform = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),# VGG-16 Takes 224x224 images as input, so we resize all of them
+        transforms.ToTensor()]
+    )
+ 
+    img = transform(img)
+    x = Variable(torch.unsqueeze(img, dim=0).float(), requires_grad=False)
 
-#Load the data directory  where the images are stored
-data_dir = '1/imgs/'
-contents = os.listdir(data_dir)
-data_df = pd.read_csv("Y_dbnet.csv", header = None)
-classes = data_df[2]
-#Each folder becomes a different class
+    y = net(x).cpu()
+    y = torch.squeeze(y)
+    y = y.data.numpy()
 
-print(contents)
-print(classes)
+    return y
 
 
-images = []
-batch = []
-labels = []
 
-j =0
+# #Load the data directory  where the images are stored
+# data_dir = '1/imgs/'
+# contents = os.listdir(data_dir)
+# data_df = pd.read_csv("Y_dbnet.csv", header = None)
+# classes = data_df[2]
+# #Each folder becomes a different class
 
-for each in classes: #Loop for the folders
-  print("Starting {} images".format(each))
-  class_path = data_dir 
-  files = os.listdir(class_path)
+# print(contents)
+# print(classes)
+
+
+# images = []
+# batch = []
+# labels = []
+
+# j =0
+
+# for each in classes: #Loop for the folders
+#   print("Starting {} images".format(each))
+#   class_path = data_dir 
+#   files = os.listdir(class_path)
   
-  for ii, file in enumerate(files, 1):
+#   for ii, file in enumerate(files, 1):
 
-    img = os.path.join(class_path, file)
-    features = extractor(img, model) # Extract features using the VGG-16 structure
-    batch.append(features)
-    images.append(file)
-    labels.append(str(j))
-    print("finish {}".format(ii))
-  j = j + 1    #Class iterator
-np_batch = np.array(batch)
-np_labels = np.array(labels)
-np_images = np.array(images)
+#     img = os.path.join(class_path, file)
+#     features = extractor(img, model) # Extract features using the VGG-16 structure
+#     batch.append(features)
+#     images.append(file)
+#     labels.append(str(j))
+#     print("finish {}".format(ii))
+#   j = j + 1    #Class iterator
+# np_batch = np.array(batch)
+# np_labels = np.array(labels)
+# np_images = np.array(images)
 
-np_labels_T = np_labels.reshape(-1,1)
-np_images_T = np_images.reshape(-1,1)
-print(np_labels_T)
+# np_labels_T = np_labels.reshape(-1,1)
+# np_images_T = np_images.reshape(-1,1)
+# print(np_labels_T)
 
 
-np_images_labels = np.hstack((np_images_T,np_labels_T))
-print(np_images_labels)
+# np_images_labels = np.hstack((np_images_T,np_labels_T))
+# print(np_images_labels)
 
-#Slpit the data into training and test sets
-from sklearn.model_selection import train_test_split
+# #Slpit the data into training and test sets
+# from sklearn.model_selection import train_test_split
 
-X_train, X_test, y_train, y_test = train_test_split(
-np_batch, np_images_labels, test_size=0.3, random_state=0)
+# X_train, X_test, y_train, y_test = train_test_split(
+# np_batch, np_images_labels, test_size=0.3, random_state=0)
 
-#Convert data to Pandas in order to save as .csv
-import pandas as pd
-data_df_X_train = pd.DataFrame(X_train)
-data_df_y_train = pd.DataFrame(y_train)
-data_df_X_test = pd.DataFrame(X_test)
-data_df_y_test = pd.DataFrame(y_test)
+# #Convert data to Pandas in order to save as .csv
+# import pandas as pd
+# data_df_X_train = pd.DataFrame(X_train)
+# data_df_y_train = pd.DataFrame(y_train)
+# data_df_X_test = pd.DataFrame(X_test)
+# data_df_y_test = pd.DataFrame(y_test)
 
-print(data_df_X_train)
+# print(data_df_X_train)
 
-# Save file as .csv
-data_df_X_train.to_csv('data_df_X_train_covid.csv',header=False,index=False)
-data_df_y_train.to_csv('data_df_y_train_covid.csv',header=False,index=False)
-data_df_X_test.to_csv('data_df_X_test_covid.csv',header=False,index=False)
-data_df_y_test.to_csv('data_df_y_test_covid.csv',header=False,index=False)
+# # Save file as .csv
+# data_df_X_train.to_csv('data_df_X_train_covid.csv',header=False,index=False)
+# data_df_y_train.to_csv('data_df_y_train_covid.csv',header=False,index=False)
+# data_df_X_test.to_csv('data_df_X_test_covid.csv',header=False,index=False)
+# data_df_y_test.to_csv('data_df_y_test_covid.csv',header=False,index=False)

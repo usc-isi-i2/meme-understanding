@@ -44,6 +44,8 @@ class ClipBertTweetClassifier(t.nn.Module):
             features = self.clip_model.get_image_features(**inputs)
 
         combined_features = t.cat((pooled_output, features), 1)
+        if layer == 0:
+            return combined_features
         x = t.relu(self.linear_one(combined_features))
         if layer == 1:
             return x

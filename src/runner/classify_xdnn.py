@@ -1,6 +1,7 @@
 import os
 from argparse import ArgumentParser
 
+from sklearn.metrics import classification_report
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 
@@ -19,7 +20,7 @@ if __name__ == '__main__':
 
     args = arg_parser.parse_args()
 
-    configs = read_json_configs(os.path.join('./src/configs/classifier', args.config))
+    configs = read_json_configs(os.path.join('./src/configs/xdnn', args.config))
     logger = Logger(configs)
 
     train_dataset = get_train_dataset(configs)
@@ -30,7 +31,7 @@ if __name__ == '__main__':
     train_features = trainer.extract_features(train_dataset)
     test_features = trainer.extract_features(test_dataset)
 
-    run_xDNN_softmax = True
+    run_xDNN_softmax = False
 
     if run_xDNN_softmax:
         scaler_train = MinMaxScaler()
@@ -58,7 +59,7 @@ if __name__ == '__main__':
             'Labels': np.array(test_features['Labels'])
         }
 
-        output_testing = xDNN_softmax(input_testing, 'Validation')
+        output_validation = xDNN_softmax(input_testing, 'Validation')
 
 
     else:
@@ -78,5 +79,18 @@ if __name__ == '__main__':
         }
 
         output_validation = xDNN(input_testing, 'Validation')
+
+    # Log classwise prototype counts
+    logger.log_text(configs.logs.files.xdnn, f'Training Dataset Length: {len(train_dataset)}')
+    for k in output_learning['xDNNParms']['Parameters']:
+        p_count = len(output_learning['xDNNParms']['Parameters'][k]['Prototype'])
+        logger.log_text(configs.logs.files.xdnn, f'Class {k} has {p_count} prototypes')
+        
+    # Compute and log classification report
+    predicted_labels = [int(x) for x in output_validation['EstLabs']]
+    classification_report = classification_report(test_features['Labels'], predicted_labels, output_dict=True)
+    logger.log_text(configs.logs.files.xdnn, str(classification_report))
+
+    print(classification_report['macro avg']['f1-score'])
 
     print('done')

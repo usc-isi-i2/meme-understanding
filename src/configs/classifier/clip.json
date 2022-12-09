@@ -43,7 +43,7 @@
         "train_batch_size": 16,
         "eval_batch_size": 128,
         "k_fold": 5,
-        "patience": 3
+        "patience": 10
     },
     "model": {
         "type": "clip",
@@ -52,6 +52,10 @@
             "max_length": 128,
             "dimentions": 768
         },
-        "clip": {}
+        "clip": {},
+        "knn": {
+            "feature_layer": 2,
+            "best_fold": 4
+        }
     }
 }

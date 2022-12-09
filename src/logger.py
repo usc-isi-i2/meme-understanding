@@ -11,6 +11,7 @@ class Logger:
             shutil.rmtree(self.dir)
         
         os.makedirs(self.dir, exist_ok=True)
+        os.makedirs(os.path.join(configs.logs.dir, configs.title + '-' + configs.task, configs.logs.files.models), exist_ok=True)
         json.dump(configs.configs, open(os.path.join(self.dir, 'configs.json'), 'w'))
         
 

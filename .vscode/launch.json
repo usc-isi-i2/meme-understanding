@@ -27,7 +27,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "bertweet.json", "--device", "cuda:1"]
+            "args": ["--config", "bertweet.json", "--device", "cuda:0"]
         },
         {
             "name": "Bert Classifier",
@@ -75,7 +75,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "clip.json", "--device", "cuda:3"]
+            "args": ["--config", "clip.json", "--device", "cuda:2"]
         },
         {
             "name": "Clip Hateful Classifier",
@@ -111,7 +111,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "combined.json", "--device", "cuda:4"]
+            "args": ["--config", "combined.json", "--device", "cuda:6"]
         },
         {
             "name": "Python: Object Detection",
@@ -135,7 +135,7 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--device", "cuda:2", "--config", "${cwd}/src/configs/knn/local.json"]
+            "args": ["--device", "cuda:0", "--config", "${cwd}/src/configs/classifier/clip.json"]
         },
         {
             "name": "UIO",
@@ -150,7 +150,7 @@
             "args": ["--device", "cuda:2", "--config", "${cwd}/src/configs/knn/local.json"]
         },
         {
-            "name": "Clip xDNN",
+            "name": "xDNN Classifier",
             "type": "python",
             "request": "launch",
             "program": "${cwd}/src/runner/classify_xdnn.py",
@@ -159,7 +159,31 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             },
-            "args": ["--config", "clip.json", "--device", "cuda:1"]
+            "args": ["--config", "combined.json", "--device", "cuda:0"]
+        },
+        {
+            "name": "xDNN Classifier 1",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/classify_xdnn.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "combined.json", "--device", "cuda:0"]
+        },
+        {
+            "name": "xDNN Classifier 2",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/runner/classify_xdnn.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            },
+            "args": ["--config", "combined.json", "--device", "cuda:0"]
         },
         {
             "name": "MNIST xDNN",

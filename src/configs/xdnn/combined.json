@@ -1,7 +1,7 @@
 {
-    "title": "bertweet",
+    "title": "combined",
     "seed": 42,
-    "task": "B",
+    "task": "xdnn",
     "logs": {
         "dir": "./logs",
         "files": {
@@ -10,7 +10,8 @@
             "best": "best.log",
             "predictions": "predictions.log",
             "data": "data.log",
-            "models": "models"
+            "models": "models",
+            "xdnn": "xdnn.log"
         }
     },
     "datasets": {
@@ -46,16 +47,12 @@
         "patience": 10
     },
     "model": {
-        "type": "text",
+        "type": "combined",
         "text": {
             "bert": "vinai/bertweet-base",
             "max_length": 128,
             "dimentions": 768
         },
-        "clip": {},
-        "knn": {
-            "feature_layer": 3,
-            "best_fold": 3
-        }
+        "clip": {}
     }
 }

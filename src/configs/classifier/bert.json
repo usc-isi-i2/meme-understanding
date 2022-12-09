@@ -10,7 +10,8 @@
             "best": "best.log",
             "predictions": "predictions.log",
             "data": "data.log",
-            "models": "models"
+            "models": "models",
+            "xdnn": "xdnn.log"
         }
     },
     "datasets": {
@@ -52,6 +53,10 @@
             "max_length": 128,
             "dimentions": 768
         },
-        "clip": {}
+        "clip": {},
+        "knn": {
+            "feature_layer": 0,
+            "best_fold": 4
+        }
     }
 }

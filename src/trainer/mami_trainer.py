@@ -66,7 +66,7 @@ class MamiTrainer(Trainer):
         features['Labels'] = []
 
         for batch in tqdm(dataloader):
-            f = model.get_features(batch['input'])
+            f = model.get_intermediate_features(batch['input'], 0)
             features['Images'].extend([[x] for x in batch['input']['image']])
             features['Features'].extend(f.tolist())
             features['Labels'].extend([int(x) for x in batch['output'][self.configs.datasets.labels[0]]])
