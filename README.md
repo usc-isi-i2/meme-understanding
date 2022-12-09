@@ -1,31 +1,26 @@
 # meme-understanding
 
-# Raw dataset
+## Raw datasets
+Link for the raw datasets:
+* MAMI: https://competitions.codalab.org/competitions/34175#learn_the_details
+* Hateful memes: https://ai.facebook.com/blog/hateful-memes-challenge-and-data-set/
 
-# Setting up environment
-[M1](./environments/m1.md) [Colab](./environments/colab.md)
 
-# To extract data
+## Setting up environment
+* [M1](./environments/m1.md) 
+* [x86 Linux](./environments/linux.md)
+* [Colab](./environments/colab.md)
+
+## To extract data
+Run following scripts from repo root directory to extract data into `./data/extracted` for MAMI and `./data/extracted_hateful_meme` for hateful meme dataset
+
 * `sh scripts/extract_mami_data.sh <raw_data_path>`
 * `sh scripts/extract_hateful_meme.sh <path/hateful_memes.zip>`
 
-# Runs
-* knn clip classification: 
-* Training Linear classifier over clip features
+# This repo supports
+* Meme classification using neural network `src/runner/classify_mami.py`
+* Meme classification using xDNN `src/runner/classify_mami.py`
+* Meme classification and similar feature extraction `src/runner/mami_knn_clip_runner.py`
 
-## Mami
-
-### Linear Classification
-* `PYTHONPATH=. nohup python src/runner/classify_mami.py --config=bert.json --device=cuda:1 > ./logs/bertweet.log &`
-* `PYTHONPATH=. nohup python src/runner/classify_mami.py --config=bertweet.json --device=cuda:1 > ./logs/bertweet.log &`
-* `PYTHONPATH=. nohup python src/runner/classify_mami.py --config=clip.json --device=cuda:2 > ./logs/clip.log &`
-* `PYTHONPATH=. nohup python src/runner/classify_mami.py --config=combined.json --device=cuda:3 > ./logs/combined.log &`
-
-### KNN classification
-* `PYTHONPATH=. python src/runner/mami_knn_clip_runner.py --device=mps`
-
-## Hateful Memes
-* `PYTHONPATH=. nohup python src/runner/classify_mami.py --config=hateful-bert.json --device=cuda:1 > ./logs/hateful-bertweet.log &`
-* `PYTHONPATH=. nohup python src/runner/classify_mami.py --config=hateful-bertweet.json --device=cuda:1 > ./logs/hateful-bertweet.log &`
-* `PYTHONPATH=. nohup python src/runner/classify_mami.py --config=hateful-clip.json --device=cuda:2 > ./logs/hateful-clip.log &`
-* `PYTHONPATH=. nohup python src/runner/classify_mami.py --config=hateful-combined.json --device=cuda:3 > ./logs/hateful-combined.log &`
+# Experiments
+The experiments were ran through [vscode launch config](.vscode/launch.json), please refer the same as the execution instructions.
