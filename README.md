@@ -18,7 +18,7 @@ Run following scripts from repo root directory to extract data into `./data/extr
 
 ## This repo supports
 * Meme classification using neural network `src/runner/classify_mami.py`
-* Meme classification using xDNN `src/runner/classify_mami.py`
+* Meme classification using xDNN `src/runner/classify_xdnn.py`
 * Meme classification and similar feature extraction `src/runner/mami_knn_clip_runner.py`
 
 ## Experiments
