@@ -60,6 +60,8 @@ class Trainer(ABC):
                         'test_metric': test_metric,
                         'test': {k: test_scores[k]['macro avg']['f1-score'] for k in self.configs.datasets.labels},
                         'eval': {k: eval_scores[k]['macro avg']['f1-score'] for k in self.configs.datasets.labels},
+                        'eval_scores': eval_scores,
+                        'test_scores': test_scores,
                     }
 
                     torch.save(self.model.state_dict(), os.path.join(self.model_save_dir, f'best_model_{kth_fold}.pt'))

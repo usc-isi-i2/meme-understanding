@@ -41,6 +41,9 @@ def xDNN(Input,Mode):
         Output['Scores'] = Scores
         Output['ConfMa'] = confusion_matrix(Input['Labels'],Output['EstLabs'])
         Output['ClassAcc'] = np.sum(Output['ConfMa']*np.identity(len(Output['ConfMa'])))/len(Input['Labels'])
+        Output['Images'] = Input['Images']
+        Output['image_list'] = [str(x[0]) for x in Input['Images']]
+        Output['image_prototypes'] = [str(x[0]) for x in Test_Results['image_prototypes']]
         return Output
     
 def PrototypesIdentification(Image,GlobalFeature,LABEL,CL):
@@ -119,20 +122,32 @@ def DecisionMaking(Params,datates):
     LTes=np.shape(datates)[0]
     EstimatedLabels = np.zeros((LTes))
     Scores=np.zeros((LTes,CurrentNC))
+
+    overall_closest_prototypes = []
     for i in range(1,LTes + 1):
         data = datates[i-1,]
         R=np.zeros((VV,CurrentNC))
         Value=np.zeros((CurrentNC,1))
+        
+        per_class_closest_prototypes = []
         for k in range(0,CurrentNC):
             # distance=np.sort(cdist(data.reshape(1, -1),PARAM[k]['Centre'],'minkowski',6))[0]
+            unsorted_distances = cdist(data.reshape(1, -1),PARAM[k]['Centre'],'euclidean')
+            argmin = np.argmax(unsorted_distances)
+            # argmin_distance = unsorted_distances[0][argmin]
+            argmin_image = PARAM[k]['Prototype'][argmin]
+            per_class_closest_prototypes.append(argmin_image)
             distance=np.sort(cdist(data.reshape(1, -1),PARAM[k]['Centre'],'euclidean'))[0]
             Value[k]=distance[0]
+
         Value = softmax(-1*Value**2).T
         Scores[i-1,] = Value
         Value = Value[0]
         Value_new = np.sort(Value)[::-1]
         indx = np.argsort(Value)[::-1]
         EstimatedLabels[i-1]=indx[0]
+        overall_closest_prototypes.append(per_class_closest_prototypes[indx[0]])
+    
     LABEL1=np.zeros((CurrentNC,1))
     
     
@@ -144,6 +159,7 @@ def DecisionMaking(Params,datates):
     dic = {}
     dic['EstimatedLabels'] = EstimatedLabels
     dic['Scores'] = Scores
+    dic['image_prototypes'] = overall_closest_prototypes
     return dic
          
 ###############################################################################
